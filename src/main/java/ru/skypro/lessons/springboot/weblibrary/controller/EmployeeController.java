@@ -7,6 +7,8 @@ import ru.skypro.lessons.springboot.weblibrary.service.EmployeeService;
 import ru.skypro.lessons.springboot.weblibrary.service.pojo.Employee;
 
 import java.util.List;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 
 @RestController
 @RequestMapping("/employee")
@@ -18,8 +20,25 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping
-    public List<Employee> showCounter() {
+    @GetMapping("/employees")
+    public List<Employee> showAllEmployees() {
         return employeeService.getAllEmployees();
+    }
+
+    @GetMapping("/salary/sum")
+    public int showSumSalaryOfEmployees() {
+        return employeeService.getSumSalaryOfEmployees();
+    }
+    @GetMapping("/salary/min")
+    public OptionalInt showMinSalaryOfEmployees() {
+        return employeeService.getMinSalaryOfEmployees();
+    }
+    @GetMapping("/salary/max")
+    public OptionalInt showMaxSalaryOfEmployees() {
+        return employeeService.getMaxSalaryOfEmployees();
+    }
+    @GetMapping("/salary/high-salary")
+    public List<Employee> showHighSalariesOfEmployees() {
+        return employeeService.getHighSalariesOfEmployees();
     }
 }
