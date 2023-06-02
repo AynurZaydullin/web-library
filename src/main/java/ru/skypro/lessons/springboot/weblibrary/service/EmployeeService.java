@@ -1,7 +1,9 @@
 package ru.skypro.lessons.springboot.weblibrary.service;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
 import ru.skypro.lessons.springboot.weblibrary.service.pojo.Employee;
 
 import java.util.List;
@@ -9,20 +11,47 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public interface EmployeeService {
-    List<Employee> getAllEmployees();
+//    List<Employee> getAllEmployees();
+//
+//    int getSumSalaryOfEmployees();
+//    OptionalInt getMinSalaryOfEmployees();
+//    OptionalInt getMaxSalaryOfEmployees();
+//
+    List<EmployeeDTO> getHighSalariesOfEmployees();
 
-    int getSumSalaryOfEmployees();
-    OptionalInt getMinSalaryOfEmployees();
-    OptionalInt getMaxSalaryOfEmployees();
 
-    List<Employee> getHighSalariesOfEmployees();
+
+
+
+    // Реализуем метод получения списка всех сотрудников
+
+//    List<Employee> getAllEmployees();
+
+    //методы до корректировки
     void addEmployee( Employee employee);
+    List<EmployeeDTO> getAllEmployees();
+    List<Employee> findAllEmployees();
 
-    void editEmployee(Employee employee);
+    List<EmployeeView> findAllEmployeesView();
 
-    void deleteEmployee(long id);
+    List<EmployeeInfo> findAllEmployeeInfo();
 
-    Employee getEmployeeById(long id);
+    List<EmployeeFullInfo> findAllEmployeeFullInfo();
 
-    List<Employee>  getEmployeesWithSalaryHigherThan(int compareSalary);
+//    void addPosition(Position position);
+    //методы до корректировки
+
+
+
+
+
+//    void addPosition(Position position);
+
+//    void editEmployee(Employee employee);
+//
+//    void deleteEmployee(long id);
+//
+//    Employee getEmployeeById(long id);
+//
+//    List<Employee>  getEmployeesWithSalaryHigherThan(int compareSalary);
 }

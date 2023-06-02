@@ -1,14 +1,37 @@
 package ru.skypro.lessons.springboot.weblibrary.service.pojo;
 
+import jakarta.persistence.*;
+import ru.skypro.lessons.springboot.weblibrary.service.Position;
+
+@Entity
+@Table(name = "employee")
 public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name;
     private int salary;
-    private long id;
 
-    public Employee(long id, String name, int salary) {
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "position_id")
+    private Position position;
+    public Employee() {
+    }
+
+    public Employee(Long id, String name, int salary) {
         this.id = id;
         this.name = name;
         this.salary = salary;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -25,22 +48,5 @@ public class Employee {
 
     public void setSalary(int salary) {
         this.salary = salary;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "name='" + name + '\'' +
-                ", salary=" + salary +
-                ", id=" + id +
-                '}';
     }
 }
