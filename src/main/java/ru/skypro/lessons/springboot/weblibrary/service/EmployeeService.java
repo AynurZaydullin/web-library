@@ -11,25 +11,17 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public interface EmployeeService {
-//    List<Employee> getAllEmployees();
-//
-//    int getSumSalaryOfEmployees();
-//    OptionalInt getMinSalaryOfEmployees();
-//    OptionalInt getMaxSalaryOfEmployees();
-//
-    List<EmployeeDTO> getHighSalariesOfEmployees();
 
-
+    List<Employee> getHighSalariesOfEmployees();
 
 
 
     // Реализуем метод получения списка всех сотрудников
 
-//    List<Employee> getAllEmployees();
+    List<Employee> getAllEmployees();
 
     //методы до корректировки
     void addEmployee( Employee employee);
-    List<EmployeeDTO> getAllEmployees();
     List<Employee> findAllEmployees();
 
     List<EmployeeView> findAllEmployeesView();
@@ -38,20 +30,9 @@ public interface EmployeeService {
 
     List<EmployeeFullInfo> findAllEmployeeFullInfo();
 
-//    void addPosition(Position position);
-    //методы до корректировки
+    List<EmployeeFullInfo> findAllEmployeeByPosition(String  position);
+    List<EmployeeFullInfo> findAllEmployeeById(long  id);
 
-
-
-
-
-//    void addPosition(Position position);
-
-//    void editEmployee(Employee employee);
-//
-//    void deleteEmployee(long id);
-//
-//    Employee getEmployeeById(long id);
-//
-//    List<Employee>  getEmployeesWithSalaryHigherThan(int compareSalary);
+    List<Employee>  getEmployeesWithSalaryHigherThan(int compareSalary);
+    List<Employee> getEmployeeWithPaging(int pageIndex, int unitPerPage);
 }
