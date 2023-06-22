@@ -6,44 +6,48 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 //import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
 import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
+import ru.skypro.lessons.springboot.weblibrary.repository.EmployeePage;
 import ru.skypro.lessons.springboot.weblibrary.repository.EmployeeRepository;
 import ru.skypro.lessons.springboot.weblibrary.service.pojo.Employee;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeePage employeePage;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeePage employeePage) {
         this.employeeRepository = employeeRepository;
+        this.employeePage = employeePage;
     }
 
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.getAllEmployees();
+    @Override
+    public List<EmployeeDTO> getAllEmployees() {
+        // Получаем список сотрудников из репозитория,
+        // Преобразуем их в DTO и собираем в список
+        return employeeRepository.findAllEmployees().stream()
+                .map(EmployeeDTO::fromEmployee)
+                .collect(Collectors.toList());
     }
 
-    public List<Employee> getHighSalariesOfEmployees() {
+    public List<EmployeeDTO> getHighSalariesOfEmployees() {
         int averageSalary = (int) employeeRepository.getAllEmployees().stream().map(e -> e.getSalary()).mapToInt(Integer::valueOf).average().getAsDouble();
-        return employeeRepository.getAllEmployees().stream().filter(e -> e.getSalary() > averageSalary).collect(Collectors.toList());
+        return employeeRepository.getAllEmployees().stream().filter(e -> e.getSalary() > averageSalary).map(EmployeeDTO::fromEmployee).collect(Collectors.toList());
     }
 
 
     // Реализуем метод получения списка всех сотрудников
 
-    //методы до переделки
     @Override
     public void addEmployee(Employee employee) {
-//        employeeRepository.addEmployee(employee);
         employeeRepository.save(employee);
     }
     @Override
-    public List<Employee> findAllEmployees() {
-        return employeeRepository.findAllEmployees();
+    public List<EmployeeDTO> findAllEmployees() {
+        return employeeRepository.findAllEmployees().stream().map(EmployeeDTO::fromEmployee).collect(Collectors.toList());
     }
 
     @Override
@@ -67,25 +71,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeFullInfo> findAllEmployeeById(String position) {
-        return employeeRepository.findAllEmployeeFullInfo().stream().filter(e -> e.).collect(Collectors.toList());
+    public List<EmployeeFullInfo> findAllEmployeeById(long id) {
+        return employeeRepository.findAllEmployeeById(id);
     }
 
-    // методы до переделки
-
-
-    public List<Employee> getEmployeesWithSalaryHigherThan(int compareSalary) {
-        return employeeRepository.getAllEmployees().stream().filter(e -> e.getSalary() >  compareSalary).collect(Collectors.toList());
+    public List<EmployeeDTO> getEmployeesWithSalaryHigherThan(int compareSalary) {
+        return employeeRepository.getAllEmployees().stream().filter(e -> e.getSalary() >  compareSalary).map(EmployeeDTO::fromEmployee).collect(Collectors.toList());
     }
 
     @Override
-    public List<Employee> getEmployeeWithPaging(int pageIndex, int unitPerPage) {
+    public List<EmployeeDTO> getEmployeeWithPaging(int pageIndex, int unitPerPage) {
         Pageable employeeOfConcretePage = PageRequest.of(pageIndex, unitPerPage);
-        //непонятно почему компилятор ругается на строчку, показанную ниже: он
-        //пишет, что должно быть "0" аргументов вместо "1" аргумента.
-        Page<Employee> page = employeeRepository.findAll(employeeOfConcretePage);
-
-        return page.stream()
+        Page<Employee> page =  employeePage.findAll(employeeOfConcretePage);
+        return page.stream().map(EmployeeDTO::fromEmployee)
                 .toList();
     }
 }

@@ -20,6 +20,7 @@ public class EmployeeDTO {
     // Метод для преобразования сущности Employee в объект EmployeeDTO
     public static EmployeeDTO fromEmployee(Employee employee) {
         return new EmployeeDTO()
+                .setId(employee.getId())
                 .setName(employee.getName())
                 .setSalary(employee.getSalary());
     }

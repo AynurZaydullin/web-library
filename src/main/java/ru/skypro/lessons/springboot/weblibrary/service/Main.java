@@ -13,6 +13,9 @@ public class Main {
     @SneakyThrows
     public static void main(String[] args) {
         String filePath = "file.txt";
+        int age = 32;
+        String sunName = "Aynur";
+        System.out.println("Hello, " + sunName + ". " + "Your age are " + age + " years");
 //        EmployeeDTO  employeeDTO = new EmployeeDTO()
 //                .setName("Иван").s
 

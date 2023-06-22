@@ -11,11 +11,12 @@ import ru.skypro.lessons.springboot.weblibrary.service.*;
 import ru.skypro.lessons.springboot.weblibrary.service.pojo.Employee;
 
 import java.util.List;
+import java.util.Map;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
 
@@ -23,26 +24,42 @@ public class EmployeeController {
     //получение всех сотрудников
 
     @GetMapping("/all_employees")
-    public List<Employee> findAllEmployees() {
-        return employeeService.findAllEmployees();
+    public List<EmployeeDTO> findAllEmployees() {
+        try {
+            return employeeService.findAllEmployees();
+        } catch (Throwable t) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     //получение имени и зарплаты сотрудников
     @GetMapping("/all_employees_view")
     public List<EmployeeView> findAllEmployeesView() {
-        return employeeService.findAllEmployeesView();
+        try {
+            return employeeService.findAllEmployeesView();
+        } catch (Throwable t) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     //получение имени и зарплаты сотрудников в другой форме
     @GetMapping("/all_employees_info")
     public List<EmployeeInfo> findAllEmployeeInfo() {
-        return employeeService.findAllEmployeeInfo();
+        try {
+            return employeeService.findAllEmployeeInfo();
+        } catch (Throwable t) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     //получение полной информации о сотрудниках: имя, зарплата, должность
     @GetMapping("/employee_full_info")
     public List<EmployeeFullInfo> findAllEmployeeFullInfo() {
-        return employeeService.findAllEmployeeFullInfo();
+        try {
+            return employeeService.findAllEmployeeFullInfo();
+        } catch (Throwable t) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     //добавление нового сотрудника
@@ -59,7 +76,7 @@ public class EmployeeController {
 
     //получение всех сотрудников
     @GetMapping("/employees")
-    public List<Employee> getAllEmployees() {
+    public List<EmployeeDTO> getAllEmployees() {
         try {
             return employeeService.getAllEmployees();
         } catch (Throwable t) {
@@ -71,7 +88,7 @@ public class EmployeeController {
 
     //получение сотрудников с зарплатой выше средней
     @GetMapping("/salary/high-salary")
-    public List<Employee> getHighSalariesOfEmployees() {
+    public List<EmployeeDTO> getHighSalariesOfEmployees() {
         try {
             return employeeService.getHighSalariesOfEmployees();
         } catch (Throwable t) {
@@ -79,21 +96,28 @@ public class EmployeeController {
         }
     }
 
-    //этот метод получился
     //получение сотрудников с должностью, указанной в параметре "position"
     @GetMapping("/position")
     public List<EmployeeFullInfo> findAllEmployeeByPosition(@RequestParam("position") String  position) {
         try {
-                return employeeService.findAllEmployeeByPosition(position);
+            return employeeService.findAllEmployeeByPosition(position);
         } catch (Throwable t) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/page")
+    public List<EmployeeDTO> getEmployeeWithPaging(@RequestParam("page") Integer page){
+        try {
+            return employeeService.getEmployeeWithPaging(page, 5 );
 
-    //этот метод не получился
+        } catch (Throwable throwable) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     //получение информации о сотруднике по переданному id
-    @GetMapping("/{id}/fullInfo")
-    public List<EmployeeFullInfo> findAllEmployeeById(@PathVariable(required = false) long  id) {
+    @GetMapping("/fullInfo/{id}")
+    public List<EmployeeFullInfo> findAllEmployeeById(@PathVariable long  id) {
         try {
             return employeeService.findAllEmployeeById(id);
         } catch (Throwable t) {
@@ -101,28 +125,11 @@ public class EmployeeController {
         }
     }
 
-    //этот метод получился
     //Возвращение всех сотрудников, зарплата которых выше переданного параметра salary
     @GetMapping("/salary/salaryHigherThan")
-    public List<Employee> showEmployeesWithSalaryHigherThan(@RequestParam("compareSalary") int  compareSalary) {
+    public List<EmployeeDTO> showEmployeesWithSalaryHigherThan(@RequestParam("compareSalary") int  compareSalary) {
         try {
             return employeeService.getEmployeesWithSalaryHigherThan(compareSalary);
-        } catch (Throwable t) {
-            // В случае возникновения исключения выбрасываем
-            // ResponseStatusException с указанием статуса 400 (Bad Request).
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    //этот метод не получился:
-    // ошибка исходит из класса EmployeeServiceImpl;
-    // непонятно почему компилятор ругается на строчку, показанную ниже: он
-    // пишет, что должно быть "0" аргументов вместо "1" аргумента.
-    //возвращение информации о сотрудниках, основываясь на номере страницы
-    @GetMapping("/page")
-    public List<Employee> getEmployeeWithPaging(@RequestParam("page") int  page, int numberOfString) {
-        try {
-            return employeeService.getEmployeeWithPaging(page, numberOfString);
         } catch (Throwable t) {
             // В случае возникновения исключения выбрасываем
             // ResponseStatusException с указанием статуса 400 (Bad Request).
