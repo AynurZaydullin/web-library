@@ -24,4 +24,4 @@ GET http://localhost:8080/employee/{id}
 DELETE http://localhost:8080/employee/{id}
 
 ### Возвращение всех сотрудников, зарплата которых выше переданного параметра salary
-GET http://localhost:8080/employee/salaryHigherThan?salary=
+GET http://localhost:8080/employee/salaryHigherThan?salary=90000
