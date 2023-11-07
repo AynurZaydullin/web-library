@@ -4,7 +4,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
 import ru.skypro.lessons.springboot.weblibrary.service.*;
@@ -98,17 +100,18 @@ public class EmployeeController {
 
     //получение сотрудников с должностью, указанной в параметре "position"
     @GetMapping("/position")
-    public List<EmployeeFullInfo> findAllEmployeeByPosition(@RequestParam("position") String  position) {
+    public List<EmployeeFullInfo> findAllEmployeeByPosition(@RequestParam("position") String position) {
         try {
             return employeeService.findAllEmployeeByPosition(position);
         } catch (Throwable t) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("/page")
-    public List<EmployeeDTO> getEmployeeWithPaging(@RequestParam("page") Integer page){
+    public List<EmployeeDTO> getEmployeeWithPaging(@RequestParam("page") Integer page) {
         try {
-            return employeeService.getEmployeeWithPaging(page, 5 );
+            return employeeService.getEmployeeWithPaging(page, 5);
 
         } catch (Throwable throwable) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -117,7 +120,7 @@ public class EmployeeController {
 
     //получение информации о сотруднике по переданному id
     @GetMapping("/fullInfo/{id}")
-    public List<EmployeeFullInfo> findAllEmployeeById(@PathVariable long  id) {
+    public List<EmployeeFullInfo> findAllEmployeeById(@PathVariable long id) {
         try {
             return employeeService.findAllEmployeeById(id);
         } catch (Throwable t) {
@@ -127,7 +130,7 @@ public class EmployeeController {
 
     //Возвращение всех сотрудников, зарплата которых выше переданного параметра salary
     @GetMapping("/salary/salaryHigherThan")
-    public List<EmployeeDTO> showEmployeesWithSalaryHigherThan(@RequestParam("compareSalary") int  compareSalary) {
+    public List<EmployeeDTO> showEmployeesWithSalaryHigherThan(@RequestParam("compareSalary") int compareSalary) {
         try {
             return employeeService.getEmployeesWithSalaryHigherThan(compareSalary);
         } catch (Throwable t) {
@@ -136,4 +139,13 @@ public class EmployeeController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
+
+    //Получение списка сотрудников в JSON-формате и сохранение их в БД.
+//    @PostMapping("/upload")
+//    public List<EmployeeDTO> getEmployeesInJSON(@RequestBody )
+//    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public void upload(@RequestPart("employees") MultipartFile employees) {
+//        employeeService.upload(employees);
+//    }
+
 }

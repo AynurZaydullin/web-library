@@ -10,6 +10,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String department;
 
     private String name;
     private int salary;
@@ -20,8 +21,9 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Long id, String name, int salary) {
+    public Employee(Long id, String department, String name, int salary) {
         this.id = id;
+        this.department = department;
         this.name = name;
         this.salary = salary;
     }

@@ -1,15 +1,22 @@
 package ru.skypro.lessons.springboot.weblibrary.service;
 
+import aj.org.objectweb.asm.TypeReference;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 //import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
+import ru.skypro.lessons.springboot.weblibrary.exeptions.IllegalJsonFileException;
+import ru.skypro.lessons.springboot.weblibrary.exeptions.InternalServerError;
 import ru.skypro.lessons.springboot.weblibrary.repository.EmployeePage;
 import ru.skypro.lessons.springboot.weblibrary.repository.EmployeeRepository;
 import ru.skypro.lessons.springboot.weblibrary.service.pojo.Employee;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,19 +25,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeePage employeePage;
+//    private final ObjectMapper objectMapper;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeePage employeePage) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeePage employeePage){//, ObjectMapper objectMapper) {
         this.employeeRepository = employeeRepository;
         this.employeePage = employeePage;
+//        this.objectMapper = objectMapper;
     }
+
+//    public void createBatchEmployees(List<EmployeeDTO> employees) {
+//        employees.stream()
+//                .map(employeeMapper::toEntity)
+//                .forEach(employeeRepository::save);
+//    }
 
     @Override
     public List<EmployeeDTO> getAllEmployees() {
         // Получаем список сотрудников из репозитория,
         // Преобразуем их в DTO и собираем в список
-        return employeeRepository.findAllEmployees().stream()
-                .map(EmployeeDTO::fromEmployee)
-                .collect(Collectors.toList());
+            return employeeRepository.findAllEmployees().stream()
+                    .map(EmployeeDTO::fromEmployee)
+                    .collect(Collectors.toList());
     }
 
     public List<EmployeeDTO> getHighSalariesOfEmployees() {
@@ -43,7 +58,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void addEmployee(Employee employee) {
-        employeeRepository.save(employee);
+        try{
+            employeeRepository.save(employee);
+        } catch (Exception  e){
+            throw new InternalServerError();
+        }
+
     }
     @Override
     public List<EmployeeDTO> findAllEmployees() {
@@ -86,4 +106,25 @@ public class EmployeeServiceImpl implements EmployeeService {
         return page.stream().map(EmployeeDTO::fromEmployee)
                 .toList();
     }
+
+//    @Override
+//    public void upload(MultipartFile employees) {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//
+//        try {
+//            String extension = StringUtils.getFilenameExtension(employees.getOriginalFilename());
+//            if (!"json".equals(extension)) {
+//                throw new IllegalJsonFileException();
+//            }
+//            List<EmployeeDTO> employeeDTOS = objectMapper.readValue(
+//                    employees.getBytes(),
+//                    new TypeReference<>() {
+//
+//                    }
+//            );
+////            createBatchEmployees(employeeDTOS);
+//        }catch (IOException e) {
+//            throw new IllegalJsonFileException();
+//        }
+//    }
 }

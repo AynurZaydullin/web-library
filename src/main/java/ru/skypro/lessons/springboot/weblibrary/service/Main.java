@@ -1,7 +1,9 @@
 package ru.skypro.lessons.springboot.weblibrary.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
+import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTOSerializable;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -12,10 +14,50 @@ import java.nio.file.Paths;
 public class Main {
     @SneakyThrows
     public static void main(String[] args) {
-        String filePath = "file.txt";
-        int age = 32;
-        String sunName = "Aynur";
-        System.out.println("Hello, " + sunName + ". " + "Your age are " + age + " years");
+        // Задаем имя файла для сохранения
+//        String fileName = "file.txt";
+
+//        EmployeeDTO employeeDTO = new EmployeeDTO()
+//                .setId(0l)
+//                .setName("Aynur")
+//                .setSalary(200_000);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String json = objectMapper.writeValueAsString(employeeDTO);
+//        System.out.println(json);
+//        String filePath = "employees.txt";
+//        String content = readFromFile(filePath);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        EmployeeDTO employeeDTO = objectMapper.readValue("employees.txt", EmployeeDTO.class);
+//        System.out.println(employeeDTO);
+        // Создаем новый объект EmployeeDTO
+//        EmployeeDTOSerializable employeeDTOSerializable = new EmployeeDTOSerializable();
+//        employeeDTOSerializable.setName("Василий");
+//        employeeDTOSerializable.setSalary(125000);
+//
+//        // Используем try-with-resources для автоматического закрытия потоков
+//        try (FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+//             // Создаем поток для записи байтов в файл
+//             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+//            // Создаем поток для сериализации объекта
+//
+//            // Записываем сериализованный объект в файл
+//            objectOutputStream.writeObject(employeeDTOSerializable);
+//        }
+
+//        EmployeeDTOSerializable employeeDTOSerializable = null;
+//
+//
+//        try (FileInputStream fileInputStream = new FileInputStream(fileName);
+//             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+//
+//            employeeDTOSerializable = (EmployeeDTOSerializable) objectInputStream.readObject();
+//        }
+//
+//        System.out.println(employeeDTOSerializable);
+//        String filePath = "file.txt";
+//        int age = 32;
+//        String sunName = "Aynur";
+//        System.out.println("Hello, " + sunName + ". " + "Your age are " + age + " years");
 //        EmployeeDTO  employeeDTO = new EmployeeDTO()
 //                .setName("Иван").s
 
@@ -89,36 +131,36 @@ public class Main {
 //        System.out.println(content);
     }
 
-    private static String readFromFile(String filePath) {
-        try(InputStream inputStream = new FileInputStream(filePath)) {
-
-            int fileSize = inputStream.available();
-            byte[] byteArray = new byte[fileSize];
-            inputStream.read(byteArray);
-            return new String(byteArray, StandardCharsets.UTF_8);
-//            StringBuilder stringBuilder = new StringBuilder();
-//            int byteContent;
-//            while ((byteContent = inputStream.read()) != -1) {
-//                char c = (char) byteContent;
-//                stringBuilder.append(c);
-//            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
-//        return "filePath";
-    }
-
-    private static void writToFile(String filePath, String content) {
-        try (OutputStream outputStream = new FileOutputStream(filePath)) {
-            outputStream.write(content.getBytes());
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    private static String readFromFile(String filePath) {
+//        try(InputStream inputStream = new FileInputStream(filePath)) {
+//
+//            int fileSize = inputStream.available();
+//            byte[] byteArray = new byte[fileSize];
+//            inputStream.read(byteArray);
+//            return new String(byteArray, StandardCharsets.UTF_8);
+////            StringBuilder stringBuilder = new StringBuilder();
+////            int byteContent;
+////            while ((byteContent = inputStream.read()) != -1) {
+////                char c = (char) byteContent;
+////                stringBuilder.append(c);
+////            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return "";
+//        }
+////        return "filePath";
+//    }
+//
+//    private static void writToFile(String filePath, String content) {
+//        try (OutputStream outputStream = new FileOutputStream(filePath)) {
+//            outputStream.write(content.getBytes());
+//
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     //listing 3
     // Создаем метод writeTextToFile для записи текста в файл
